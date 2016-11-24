@@ -27,20 +27,5 @@ public class OneSiteAppApplication {
 		SpringApplication.run(OneSiteAppApplication.class, args);
 	}
 
-	@Configuration
-	@Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
-	protected static class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-		@Override
-		protected void configure(HttpSecurity http) throws Exception {
-			http
-					.httpBasic()
-					.and()
-					.authorizeRequests()
-					.antMatchers("/index.html", "/home.html", "/login.html", "/", "/bower_components/**").permitAll()
-					.anyRequest().authenticated().and()
-					.csrf()
-					.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
-		}
-	}
 
 }
