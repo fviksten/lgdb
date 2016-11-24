@@ -23,7 +23,7 @@ angular.module('hello', [ 'ngRoute' ])
     })
     .controller('home', function($http) {
         var self = this;
-        $http.get('/resource').then(function(response) {
+        $http.get('/hello').then(function(response) {
             self.greeting = response.data;
         })
     })
