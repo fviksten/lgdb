@@ -57,6 +57,17 @@
 			<artifactId>spring-cloud-starter-zuul</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-jdbc</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<!--<version>is inherent from parent pom</version>-->
+		</dependency>
+
 	</dependencies>
 
 	<build>

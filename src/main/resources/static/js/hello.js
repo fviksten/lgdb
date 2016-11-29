@@ -16,6 +16,10 @@ angular.module('hello', [ 'ngRoute' ])
             templateUrl : 'micro.html',
             controller : 'micro',
             controllerAs: 'vm'
+        }).when('/newuser', {
+            templateUrl : 'newuser.html',
+            controller : 'addUser',
+            controllerAs: 'vm'
         }).otherwise('/');
 
         $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
@@ -32,6 +36,19 @@ angular.module('hello', [ 'ngRoute' ])
         $http.get('resource/').then(function(response) {
             self.greeting = response.data;
         });
+    })
+    .controller('addUser', function($http, $location) {
+        var self = this;
+        self.user = {};
+        console.log('inside controller!');
+        self.addUser = function () {
+            console.log('add user button pushed...');
+            console.log('username: ' + self.user.username);
+            console.log('password: ' + self.user.password);
+            $http.post('/addUser', self.user).finally(function() {
+                $location.path("/login");
+            });
+        }//End addUser.
     })
     .controller('navigation',
         function($rootScope, $http, $location) {

@@ -1,0 +1,14 @@
+try (Connection conn = dataSource.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT 1+1")) {
+            rs.next();
+            int two = rs.getInt(1);
+            if(two == 2) {
+                System.out.println("DB OK");
+            }else{
+                System.out.println("smth is wrong!");
+            }
+
+        }
+
+
