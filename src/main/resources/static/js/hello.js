@@ -39,14 +39,12 @@ angular.module('hello', [ 'ngRoute' ])
     })
     .controller('addUser', function($http, $location) {
         var self = this;
-        self.user = {};
-        console.log('inside controller!');
+        self.user = {};//objektet mappas mot värden i formuläret.
         self.addUser = function () {
-            console.log('add user button pushed...');
-            console.log('username: ' + self.user.username);
-            console.log('password: ' + self.user.password);
-            $http.post('/addUser', self.user).finally(function() {
-                $location.path("/login");
+            //console.log('username: ' + self.user.username);
+            //console.log('password: ' + self.user.password);
+            $http.post('/addUser', self.user).success(function (response) {
+                $location.path("/login").search({param: response.response});;
             });
         }//End addUser.
     })
@@ -89,7 +87,12 @@ angular.module('hello', [ 'ngRoute' ])
                         self.error = true;
                     }
                 });
-            };
+            };//authenticate
+
+            // console.log($location.search());//object
+            // console.log($location.search().param);//OK / ERROR
+            self.message = $location.search().param;
+
         });
 
 

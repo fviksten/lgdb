@@ -35,4 +35,27 @@ public class UserMySqlRepository implements UserRepository {
 
     }//End saveUser
 
+    @Override
+    public boolean userExists(User user) {
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement("SELECT id " +
+                     "FROM Users WHERE username = ?")) {
+            ps.setString(1, user.getUsername());
+            try (ResultSet rs = ps.executeQuery()) {
+                if (!rs.next()) {
+                    System.out.println("no user found!");
+                    return false;
+                }else{
+                    System.out.println("user found: ");
+                    System.out.println(rs.getInt(1));
+                    return true;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Här är något väldigt fel: ...");
+        return true;
+    }
+
 }

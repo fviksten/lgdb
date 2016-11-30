@@ -8,4 +8,5 @@ import java.sql.SQLException;
 public interface UserRepository {
 
     void saveUser(User user) throws SQLException;
+    boolean userExists(User user);
 }

@@ -2,12 +2,11 @@ package com.lgdb;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -36,15 +35,21 @@ public class LgdbController {
         return model;
     }
 
-    @PostMapping("/addUser")
-    public void newUser(@RequestBody User user) {
-
+    @RequestMapping(value = "/addUser", method = RequestMethod.POST, produces = "application/json")
+    public Object newUser(@RequestBody User user) {
         System.out.println(user.getUsername() + " " + user.getPassword());
-
-        try {
-            userRepository.saveUser(user);
-        } catch (SQLException e) {
-            e.printStackTrace();
+        if(userRepository.userExists(user)){
+            Object status = Collections.singletonMap("response", "ERROR");
+            return status;
+        }else{
+            //adduser.
+            try {
+                userRepository.saveUser(user);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            Object status = Collections.singletonMap("response", "OK");
+            return status;
         }
     }
 

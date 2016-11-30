@@ -12,3 +12,29 @@ try (Connection conn = dataSource.getConnection();
         }
 
 
+self.sendDestinations = function (sendObject) {
+        $http.post("/myDestinations", sendObject)
+            .success(function (response) {
+                userService.user = response.user;
+                $location.path("/personalpage");
+            }).error(function (response) {
+            userService.user = {};
+            $location.path("/error").search({error: response.errors[0].message})
+        })
+    }
+
+    self.addUser = function () {
+                console.log('add user button pushed...');
+                console.log('username: ' + self.user.username);
+                console.log('password: ' + self.user.password);
+                $http.post('/addUser', self.user).finally(function() {
+                    $location.path("/login");
+                });
+            }//End addUser.
+
+            Från newUser saveUser:
+//        try {
+//            userRepository.saveUser(user);
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
