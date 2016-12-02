@@ -29,7 +29,8 @@ angular.module('hello', [ 'ngRoute' ])
         var self = this;
         $http.get('/hello').then(function(response) {
             self.greeting = response.data;
-        })
+        });
+        //Kan man få fram den inloggade personens namn här?
     })
     .controller('micro', function($http) {
         var self = this;
@@ -69,7 +70,7 @@ angular.module('hello', [ 'ngRoute' ])
             }
 
             self.logout = function() {
-                $http.post('logout', {}).finally(function() {
+                $http.post('/logout').finally(function() {
                     $rootScope.authenticated = false;
                     $location.path("/");
                 });
@@ -77,17 +78,18 @@ angular.module('hello', [ 'ngRoute' ])
 
             authenticate();
             self.credentials = {};
-            self.login = function() {
-                authenticate(self.credentials, function() {
-                    if ($rootScope.authenticated) {
-                        $location.path("/");
-                        self.error = false;
-                    } else {
-                        $location.path("/login");
-                        self.error = true;
-                    }
-                });
-            };//authenticate
+            self.login = function() {//self.login är ersatt av login formuläret i login.html
+                console.log('loggar in ...');
+                // authenticate(self.credentials, function() {
+                //     if ($rootScope.authenticated) {
+                //         $location.path("/");
+                //         self.error = false;
+                //     } else {
+                //         $location.path("/login");
+                //         self.error = true;
+                //     }
+                // });
+            };//login
 
             // console.log($location.search());//object
             // console.log($location.search().param);//OK / ERROR
