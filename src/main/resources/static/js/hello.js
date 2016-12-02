@@ -30,6 +30,11 @@ angular.module('hello', [ 'ngRoute' ])
         $http.get('/hello').then(function(response) {
             self.greeting = response.data;
         });
+        $http.get('/getUsername').then(function(response) {
+            self.user = response.data;
+            console.log('getUsername:');
+            console.log(self.user);
+        });
         //Kan man få fram den inloggade personens namn här?
     })
     .controller('micro', function($http) {

@@ -35,6 +35,14 @@ public class LgdbController {
         return model;
     }
 
+    @RequestMapping("/getUsername")
+    public Map<String,Object> sendUsername(Principal user) {
+        Map<String,Object> model = new HashMap<String,Object>();
+        model.put("username", user.getName());
+        System.out.println("Ojojoj: " + user.getName());
+        return model;
+    }
+
     @RequestMapping(value = "/addUser", method = RequestMethod.POST, produces = "application/json")
     public Object newUser(@RequestBody User user) {
         System.out.println(user.getUsername() + " " + user.getPassword());
