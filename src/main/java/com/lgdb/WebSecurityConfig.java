@@ -11,8 +11,17 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.csrf.CsrfToken;
+import org.springframework.web.filter.OncePerRequestFilter;
 
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
+import java.io.IOException;
 
 /**
  * Created by Administrator on 2016-11-24.
@@ -57,7 +66,25 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutSuccessUrl("/")
                 .permitAll()
                 .and()
-                .csrf().disable();
+                .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
+    }
+
+    private Filter csrfHeaderFilter() {
+        return new OncePerRequestFilter() {
+            @Override
+            protected void doFilterInternal(HttpServletRequest request,
+                                            HttpServletResponse response, FilterChain filterChain)
+                    throws ServletException, IOException {
+                CsrfToken csrf = (CsrfToken) request.getAttribute(CsrfToken.class
+                        .getName());
+                if (csrf != null) {
+                    Cookie cookie = new Cookie("XSRF-TOKEN", csrf.getToken());
+                    cookie.setPath("/");
+                    response.addCookie(cookie);
+                }
+                filterChain.doFilter(request, response);
+            }
+        };
     }
 
     @Autowired

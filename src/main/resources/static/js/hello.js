@@ -85,15 +85,15 @@ angular.module('hello', [ 'ngRoute' ])
             self.credentials = {};
             self.login = function() {//self.login är ersatt av login formuläret i login.html
                 console.log('loggar in ...');
-                // authenticate(self.credentials, function() {
-                //     if ($rootScope.authenticated) {
-                //         $location.path("/");
-                //         self.error = false;
-                //     } else {
-                //         $location.path("/login");
-                //         self.error = true;
-                //     }
-                // });
+                authenticate(self.credentials, function() {
+                    if ($rootScope.authenticated) {
+                        $location.path("/");
+                        self.error = false;
+                    } else {
+                        $location.path("/login");
+                        self.error = true;
+                    }
+                });
             };//login
 
             // console.log($location.search());//object
