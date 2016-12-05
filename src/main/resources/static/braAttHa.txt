@@ -38,3 +38,7 @@ self.sendDestinations = function (sendObject) {
 //        } catch (SQLException e) {
 //            e.printStackTrace();
 //        }
+
+login.html:
+<!--action="/login" method="post"-->
+<!--<div><input type="submit" value="Sign In"/></div>-->

@@ -4,7 +4,7 @@
 <div class="alert alert-success" ng-if="controller.message == 'OK'">User added. You can now log in to the site.</div>
 <div class="alert alert-danger" ng-if="controller.message == 'ERROR'">Something went wrong. Try another username</div>
 <div class="alert alert-danger" ng-if="controller.message == 'loginError'">Sorry. Invalid username or password.</div>
-<!--action="/login" method="post"-->
+
 <form  role="form" ng-submit="controller.login()">
     <div class="form-group">
         <label for="username">Username:</label> <input type="text" class="form-control" id="username" name="username" ng-model="controller.credentials.username"/>
@@ -13,7 +13,7 @@
     <div class="form-group">
         <label for="password">Password:</label> <input type="password" class="form-control" id="password" name="password" ng-model="controller.credentials.password"/>
     </div>
-    <!--<div><input type="submit" value="Sign In"/></div>-->
+
     <button type="submit" class="btn btn-primary">Log in</button>
 </form>
 

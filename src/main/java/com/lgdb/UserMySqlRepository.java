@@ -1,6 +1,7 @@
 package com.lgdb;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
@@ -15,10 +16,17 @@ public class UserMySqlRepository implements UserRepository {
     @Autowired
     DataSource dataSource;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Override
     public void saveUser(User user) throws SQLException {
 
         System.out.println("Inside saveUser:");
+
+        //Hash password:
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement("INSERT INTO users (username, password) " +
                      "VALUES (?,?)")) {
