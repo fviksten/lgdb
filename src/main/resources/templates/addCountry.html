@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Admin - LGDB</title>
+</head>
+<body>
+<h1>ADMIN - add a country to DB</h1>
+
+<h2>Länder som finns i DB:</h2>
+<li th:each="country : ${Countries}">
+    <p th:text="${country.name}"></p>
+</li>
+
+<h2>Lägg till ett land:</h2>
+
+<form th:action="@{/saveCountry}" method="POST">
+    <input type="hidden"
+           th:name="${_csrf.parameterName}"
+           th:value="${_csrf.token}"/>
+    Country:<br/>
+    <input type="text" name="countryName"/>
+    <br/>
+    <input type="submit" value="Submit"/>
+</form>
+
+<ul>
+    <li><a href="/admin/">Back to admin page</a></li>
+</ul>
+
+</body>
+</html>
