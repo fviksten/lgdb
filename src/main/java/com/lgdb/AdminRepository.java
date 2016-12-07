@@ -1,5 +1,6 @@
 package com.lgdb;
 
+import java.sql.Date;
 import java.util.List;
 
 /**
@@ -8,4 +9,6 @@ import java.util.List;
 public interface AdminRepository {
     void saveCountry(String countryName);
     List<Country> getCountries ();
+
+    void saveCompany(Company company);
 }

@@ -2,10 +2,12 @@ package com.lgdb;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.sql.Date;
+import java.text.ParseException;
 
 /**
  * Created by Administrator on 2016-12-05.
@@ -32,6 +34,33 @@ public class AdminController {
         adminRepository.saveCountry(countryName);
         return "redirect:/addCountry";
     }
+    //END Countries
+
+    //Visa addCompany
+    @GetMapping("/admin/addCompany")
+    public String addCompanyForm(Model model){
+        model.addAttribute("company", new Company());
+        model.addAttribute("Countries", adminRepository.getCountries());
+        return "addCompany";
+    }
+
+    @PostMapping("/admin/saveCompany")
+    public ModelAndView addCompanySubmit(@ModelAttribute Company company){
+
+        if(company.getDefund()!=""){
+            try {
+                company.setDateDefund();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        adminRepository.saveCompany(company);
+
+        return new ModelAndView("addCompany").addObject("Countries", adminRepository.getCountries());
+    }
+
+
+
 
 
 }

@@ -4,10 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,6 +47,26 @@ public class AdminMySqlRepository implements AdminRepository {
             return null;
         }
     }
+
+    @Override
+    public void saveCompany(Company company) {
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement("INSERT INTO companies(Name,Founded,Defund,Country_ID)" +
+                     "VALUES (?,?,?,?)")) {
+            ps.setString(1, company.getName());
+            ps.setDate(2, company.getFounded());
+            ps.setDate(3, company.getDateDefund());
+            ps.setInt(4, company.getCountryId());
+            try {
+                ps.executeUpdate();
+            }catch (SQLException e){
+                e.printStackTrace();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     private Country rsCountry(ResultSet rs) throws SQLException {
         return new Country(
                 rs.getInt("ID"),
