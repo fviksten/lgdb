@@ -18,23 +18,52 @@ public class AdminController {
     @Autowired
     private AdminRepository adminRepository;
 
-    @RequestMapping(method = RequestMethod.GET, path = "/admin/")
+    //# # # ADMIN - PAGE # # #
+    @RequestMapping(method = RequestMethod.GET, path = "/admin")
     public ModelAndView adminPage() {
         return new ModelAndView("adminPage");
     }
+    //# # # END ADMIN - PAGE # # #
 
-    //Visa admin-sidan
-    @RequestMapping(method = RequestMethod.GET, path = "/addCountry")
-    public ModelAndView countryPage() {
-        return new ModelAndView("addCountry").addObject("Countries", adminRepository.getCountries());
+    // ### ADDCOUNTRY ###
+    @GetMapping("/admin/addCountry")
+    public String countryPage(Model model) {
+        model.addAttribute("country", new Country());
+        model.addAttribute("Countries", adminRepository.getCountries());
+        return "addCountry";
+    }//### END ADDCOUNTRY ###
+
+    //### save Country ###
+    @PostMapping("/admin/saveCountry")
+    public String saveCountry(@ModelAttribute Country country, Model model) {
+        adminRepository.saveCountry(country);
+        model.addAttribute("Countries", adminRepository.getCountries());
+        return "addCountry";
+    }//### END save Country ###
+
+    //### edit Country ###
+    @RequestMapping(method = RequestMethod.GET, path = "/admin/editCountry/{id}")
+    public String editCountry(@PathVariable int id, Model model) {
+        model.addAttribute("country", adminRepository.getCountry(id));
+        return "editCountry";
+    }//### END editCountry ###
+
+    @PostMapping("/admin/alterCountry")
+    public String alterCountry(@ModelAttribute Country country) {
+        System.out.println("Alter Country(id): " + country.getId() + " " + country.getName());
+        adminRepository.alterCountry(country);
+        return "redirect:/admin/addCountry";
     }
 
-    @RequestMapping(method = {RequestMethod.POST}, path = "/saveCountry")
-    public String saveCountry(@RequestParam String countryName) {
-        adminRepository.saveCountry(countryName);
-        return "redirect:/addCountry";
+    @RequestMapping(method = RequestMethod.GET, path = "/admin/deleteCountry/{id}")
+    public String deleteCountry(@PathVariable int id) {
+        System.out.println("Deleted Country(id): " + id);
+        adminRepository.deleteCountry(id);
+        return "redirect:/admin/addCountry";
     }
-    //END Countries
+
+    //#########################
+    //# # # END Countries # # #
 
     //Visa addCompany
     @GetMapping("/admin/addCompany")

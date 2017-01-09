@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Thymeleaf Test Tutorial</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<h1>ADMIN - edit a country in DB</h1>
+
+
+<h2>Edit Country in DB:</h2>
+
+<form action="#" th:action="@{/admin/alterCountry}" th:object="${country}" method="POST">
+    <input type="hidden" th:field="*{id}" />
+    <p>Country (name): <input type="text" th:value="${country.name}" th:required="required" th:field="*{name}" /></p>
+    <input type="submit" value="Submit"/>
+</form>
+
+</body>
+</html>

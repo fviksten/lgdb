@@ -1,31 +1,59 @@
 <!doctype html>
-<html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>Admin - LGDB</title>
+    <title>Admin - LGDB addCountry</title>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 5px;
+            text-align: left;
+        }
+    </style>
 </head>
 <body>
+
 <h1>ADMIN - add a country to DB</h1>
+<table>
+    <caption th:text="#{country.caption}"></caption>
+    <thead>
+    <tr>
+        <th th:text="#{country.id}"></th>
+        <th th:text="#{country.name}"></th>
+        <th th:text="#{country.edit}"></th>
+        <th th:text="#{country.remove}"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="country : ${Countries}">
+        <td th:text="${country.id}"></td>
+        <td th:text="${country.name}"></td>
+        <td><a th:text="#{country.edit}" th:href="@{/admin/editCountry/{id}(id=${country.id})}"></a></td>
+        <td><a th:text="#{country.remove}" th:href="@{/admin/deleteCountry/{id}(id=${country.id})}"></a></td>
+    </tr>
+    </tbody>
+</table>
 
-<h2>Länder som finns i DB:</h2>
-<li th:each="country : ${Countries}">
-    <p th:text="${country.name}"></p>
-</li>
+<h2>Add a Country to DB:</h2>
+<hr/>
 
-<h2>Lägg till ett land:</h2>
-
-<form th:action="@{/saveCountry}" method="POST">
-    <input type="hidden"
-           th:name="${_csrf.parameterName}"
-           th:value="${_csrf.token}"/>
-    Country:<br/>
-    <input type="text" name="countryName"/>
-    <br/>
+<form action="#" th:action="@{/admin/saveCountry}" th:object="${country}" method="POST">
+    <p>Country (name): <input type="text" placeholder='eg. Japan' th:required="required" th:field="*{name}" /></p>
     <input type="submit" value="Submit"/>
 </form>
-
 <ul>
-    <li><a href="/admin/">Back to admin page</a></li>
+    <li><a th:href="@{/admin/addCountry}">Reset</a></li>
+</ul>
+<h2>Result</h2>
+<p th:text="'Name: ' + ${country.name}" />
+<ul>
+    <li><a th:href="@{/admin/}">Back to admin page</a></li>
 </ul>
 
 </body>

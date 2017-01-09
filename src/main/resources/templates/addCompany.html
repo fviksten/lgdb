@@ -15,26 +15,28 @@
 <li th:each="country : ${Countries}">
     <p th:text="${country.name}"></p>
 </li>
+<hr/>
 
 <form action="#" th:action="@{/admin/saveCompany}" th:object="${company}" method="POST">
-
+    <fieldset>
+        <legend>Add Company to DB:</legend>
     <p>Name: <input type="text" th:required="required" th:field="*{name}" /></p>
     <p>Founded: <input type="date"  th:required="required" th:field="*{founded}"  /> </p>
     <p>Defund: <input type="text" pattern="^$|\d{1,2}/\d{1,2}/\d{4}" th:field="*{defund}" /></p>
+    <p>Country:
     <select th:field="*{countryId}">
         <option th:each="country : ${Countries}"
                 th:value="${country.id}"
                 th:text="${country.name}">Bob</option>
     </select>
-    <!--<p>CountryId: <input type="text" th:field="*{countryId}" /></p>-->
+    </p>
     <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
+    </fieldset>
 </form>
 
 <br/>
-<h1>Result</h1>
-<p th:text="'id: ' + ${company.id}" />
-<p th:text="'name: ' + ${company.name}" />
-
+<h2>Result</h2>
+<p th:text="'Company: ' + ${company.name}" />
 
 <a th:href="@{/admin/addCompany}">Submit another Company</a>
 

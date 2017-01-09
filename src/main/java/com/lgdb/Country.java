@@ -8,24 +8,27 @@ public class Country {
     public int id;
     public String name;
 
-    public Country(int countryId, String countryName) {
-        this.id = countryId;
-        this.name = countryName;
+    public Country(int id, String name) {
+        this.id = id;
+        this.name =name;
     }
 
-    public int getCountryId() {
+    public Country() {
+    }
+
+    public int getId() {
         return id;
     }
 
-    public void setCountryId(int countryId) {
+    public void setId(int countryId) {
         this.id = countryId;
     }
 
-    public String getCountryName() {
+    public String getName() {
         return name;
     }
 
-    public void setCountryName(String countryName) {
-        this.name = countryName;
+    public void setName(String name) {
+        this.name = name;
     }
 }

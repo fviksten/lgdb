@@ -18,22 +18,6 @@ public class AdminMySqlRepository implements AdminRepository {
     private DataSource dataSource;
 
     @Override
-    public void saveCountry(String countryName) {
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement("INSERT INTO Countries (Country)" +
-                     "VALUES (?)")) {
-            ps.setString(1, countryName);
-            try {
-                ps.executeUpdate();
-            }catch (SQLException e){
-                e.printStackTrace();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }//End saveCountry
-
-    @Override
     public List<Country> getCountries() {
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement("SELECT * FROM countries")) {
@@ -45,6 +29,71 @@ public class AdminMySqlRepository implements AdminRepository {
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    @Override
+    public Country getCountry(int id) {
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement("SELECT * FROM countries WHERE id=?")) {
+            ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                Country country = new Country();
+                while (rs.next()){
+                    country = rsCountry(rs);
+                }
+                return country;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public void alterCountry(Country country) {
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement("UPDATE countries SET country=? WHERE id=?;")) {
+            ps.setString(1, country.getName());
+            ps.setInt(2,country.getId());
+            try {
+                ps.executeUpdate();
+            }catch (SQLException e){
+                e.printStackTrace();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void deleteCountry(int id) {
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement("DELETE FROM countries WHERE id=(?)")) {
+            ps.setInt(1, id);
+            try {
+                ps.executeUpdate();
+            }catch (SQLException e){
+                e.printStackTrace();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void saveCountry(Country country) {
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement("INSERT INTO Countries (Country)" +
+                     "VALUES (?)")) {
+            ps.setString(1, country.getName());
+            try {
+                ps.executeUpdate();
+            }catch (SQLException e){
+                e.printStackTrace();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
